@@ -1,10 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_chat/colors.dart';
 import 'package:my_chat/features/landing/landing_screen.dart';
 import 'package:my_chat/firebase_options.dart';
-import 'package:my_chat/rouer.dart';
+import 'package:my_chat/router.dart';
 import 'package:my_chat/screens/mobile_screen.dart';
 import 'package:my_chat/screens/web_screen.dart';
 import 'package:my_chat/utils/responsive_layout.dart';
@@ -14,7 +15,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
