@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_chat/colors.dart';
-import 'package:my_chat/widgets/custom_buton.dart';
+import 'package:my_chat/common/widgets/custom_buton.dart';
 
 import '../auth/screens/login_screen.dart';
 

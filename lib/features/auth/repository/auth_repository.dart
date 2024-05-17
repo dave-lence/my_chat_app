@@ -1,15 +1,19 @@
-import 'dart:io';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_chat/common/repository/common_firestore_repo.dart';
 import 'package:my_chat/features/auth/screens/otp_screen.dart';
 import 'package:my_chat/features/auth/screens/user_info_screen.dart';
-import 'package:my_chat/utils/utils.dart';
+import 'package:my_chat/common/utils/utils.dart';
+import 'package:my_chat/models/user_model.dart';
+import 'package:my_chat/screens/mobile_screen.dart';
 
-
-final authRepositoryProvider = Provider((ref) => AuthRepository(auth: FirebaseAuth.instance, firestore: FirebaseFirestore.instance));
+final authRepositoryProvider = Provider((ref) => AuthRepository(
+    auth: FirebaseAuth.instance, firestore: FirebaseFirestore.instance));
 
 class AuthRepository {
   final FirebaseAuth auth;
@@ -19,16 +23,16 @@ class AuthRepository {
     required this.firestore,
   });
 
-  // Future<UserModel?> getCurrentUserData() async {
-  //   var userData =
-  //       await firestore.collection('users').doc(auth.currentUser?.uid).get();
+  Future<UserModel?> getCurrentUserData() async {
+    var userData =
+        await firestore.collection('users').doc(auth.currentUser?.uid).get();
 
-  //   UserModel? user;
-  //   if (userData.data() != null) {
-  //     user = UserModel.fromMap(userData.data()!);
-  //   }
-  //   return user;
-  // }
+    UserModel? user;
+    if (userData.data() != null) {
+      user = UserModel.fromMap(userData.data()!);
+    }
+    return user;
+  }
 
   void signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
@@ -38,6 +42,7 @@ class AuthRepository {
           await auth.signInWithCredential(credential);
         },
         verificationFailed: (e) {
+          showSnackBar(context: context, content: e.message!);
           throw Exception(e.message);
         },
         codeSent: ((String verificationId, int? resendToken) async {
@@ -50,7 +55,6 @@ class AuthRepository {
         codeAutoRetrievalTimeout: (String verificationId) {},
       );
     } on FirebaseAuthException catch (e) {
-      // ignore: use_build_context_synchronously
       showSnackBar(context: context, content: e.message!);
     }
   }
@@ -66,60 +70,55 @@ class AuthRepository {
         smsCode: userOTP,
       );
       await auth.signInWithCredential(credential);
-      // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(
         context,
         UserInformationScreen.routeName,
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
-      // ignore: use_build_context_synchronously
       showSnackBar(context: context, content: e.message!);
     }
   }
 
-  // void saveUserDataToFirebase({
-  //   required String name,
-  //   required File? profilePic,
-  //   required ProviderRef ref,
-  //   required BuildContext context,
-  // }) async {
-  //   try {
-  //     String uid = auth.currentUser!.uid;
-  //     String photoUrl =
-  //         'https://png.pngitem.com/pimgs/s/649-6490124_katie-notopoulos-katienotopoulos-i-write-about-tech-round.png';
+  void saveUserDataToFirebase({
+    required String name,
+    required File? profilePic,
+    required ProviderRef ref,
+    required BuildContext context,
+  }) async {
+    try {
+      String uid = auth.currentUser!.uid;
+      String photoUrl =
+          'https://png.pngitem.com/pimgs/s/649-6490124_katie-notopoulos-katienotopoulos-i-write-about-tech-round.png';
 
-  //     if (profilePic != null) {
-  //       photoUrl = await ref
-  //           .read(commonFirebaseStorageRepositoryProvider)
-  //           .storeFileToFirebase(
-  //             'profilePic/$uid',
-  //             profilePic,
-  //           );
-  //     }
+      if (profilePic != null) {
+        photoUrl = await ref
+            .read(commonFirebaseStorageRepoProvider)
+            .saveFileToFirebase('profilePic$uid', profilePic);
+      }
 
-  //     var user = UserModel(
-  //       name: name,
-  //       uid: uid,
-  //       profilePic: photoUrl,
-  //       isOnline: true,
-  //       phoneNumber: auth.currentUser!.phoneNumber!,
-  //       groupId: [],
-  //     );
+      var user = UserModel(
+        name: name,
+        uid: uid,
+        profilePic: photoUrl,
+        isOnline: true,
+        phoneNumber: auth.currentUser!.phoneNumber!,
+        groupId: [],
+      );
 
-  //     await firestore.collection('users').doc(uid).set(user.toMap());
+      await firestore.collection('users').doc(uid).set(user.toMap());
 
-  //     Navigator.pushAndRemoveUntil(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => const MobileLayoutScreen(),
-  //       ),
-  //       (route) => false,
-  //     );
-  //   } catch (e) {
-  //     showSnackBar(context: context, content: e.toString());
-  //   }
-  // }
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MobileScreen(),
+        ),
+        (route) => false,
+      );
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
 
   // Stream<UserModel> userData(String userId) {
   //   return firestore.collection('users').doc(userId).snapshots().map(

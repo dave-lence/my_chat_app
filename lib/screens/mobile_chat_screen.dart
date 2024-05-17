@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_chat/colors.dart';
-import 'package:my_chat/widgets/chat_list.dart';
+import 'package:my_chat/common/widgets/chat_list.dart';
 
 class MobileChatScreen extends StatefulWidget {
   const MobileChatScreen({Key? key, required this.name}) : super(key: key);

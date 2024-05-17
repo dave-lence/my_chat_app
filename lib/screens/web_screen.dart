@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_chat/colors.dart';
-import 'package:my_chat/widgets/chat_list.dart';
-import 'package:my_chat/widgets/contact_list.dart';
-import 'package:my_chat/widgets/web_app_bar.dart';
-import 'package:my_chat/widgets/web_chat_app_bar.dart';
-import 'package:my_chat/widgets/web_search_bar.dart';
+import 'package:my_chat/common/widgets/chat_list.dart';
+import 'package:my_chat/common/widgets/contact_list.dart';
+import 'package:my_chat/common/widgets/web_app_bar.dart';
+import 'package:my_chat/common/widgets/web_chat_app_bar.dart';
+import 'package:my_chat/common/widgets/web_search_bar.dart';
 
 class WebScreen extends StatefulWidget {
   const WebScreen({super.key});

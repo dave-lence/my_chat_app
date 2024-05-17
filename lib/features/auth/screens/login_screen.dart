@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_chat/colors.dart';
 import 'package:my_chat/features/auth/controllers/auth_conroller.dart';
-import 'package:my_chat/utils/utils.dart';
-import 'package:my_chat/widgets/custom_buton.dart';
+import 'package:my_chat/common/utils/utils.dart';
+import 'package:my_chat/common/widgets/custom_buton.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});

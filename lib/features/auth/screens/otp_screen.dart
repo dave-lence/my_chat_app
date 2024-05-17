@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_chat/colors.dart';
 import 'package:my_chat/features/auth/controllers/auth_conroller.dart';
 
-class OTPScreen extends ConsumerWidget {
+class OTPScreen extends ConsumerStatefulWidget {
   static const String routeName = '/otp-screen';
   final String verificationId;
   const OTPScreen({
@@ -12,18 +12,22 @@ class OTPScreen extends ConsumerWidget {
     required this.verificationId,
   }) : super(key: key);
 
- 
+  @override
+  ConsumerState<OTPScreen> createState() => _OTPScreenState();
+}
+
+class _OTPScreenState extends ConsumerState<OTPScreen> {
 
   void verifyOTP(WidgetRef ref, BuildContext context, String userOTP) {
     ref.read(authControllerProvider).verifyOTP(
           context,
-          verificationId,
+          widget.verificationId,
           userOTP,
         );
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(

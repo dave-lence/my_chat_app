@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_chat/colors.dart';
+import 'package:my_chat/common/widgets/error_screen.dart';
+import 'package:my_chat/common/widgets/loader.dart';
+import 'package:my_chat/features/auth/controllers/auth_conroller.dart';
 import 'package:my_chat/features/landing/landing_screen.dart';
 import 'package:my_chat/firebase_options.dart';
 import 'package:my_chat/router.dart';
 import 'package:my_chat/screens/mobile_screen.dart';
-import 'package:my_chat/screens/web_screen.dart';
-import 'package:my_chat/utils/responsive_layout.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,12 +20,12 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: Colors.transparent,
     ));
@@ -32,8 +34,23 @@ class MyApp extends StatelessWidget {
         title: 'My Chat',
         theme: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: backgroundColor,
-            appBarTheme: AppBarTheme(backgroundColor: appBarColor)),
+            appBarTheme: const AppBarTheme(backgroundColor: appBarColor)),
         onGenerateRoute: (settings) => generateRoute(settings),
-        home: const LandingScreen());
+        home: ref.watch(userAuthProvider).when(
+            data: (user) {
+              if (user == null) {
+                return const LandingScreen();
+              }
+              return const MobileScreen();
+            },
+            error: (err, trace) {
+              return ErrorScreen(
+                error: err.toString(),
+              );
+            },
+            loading: () => const Loader(),
+          ),
+        
+        );
   }
 }
