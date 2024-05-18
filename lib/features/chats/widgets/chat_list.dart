@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_chat/info.dart';
-import 'package:my_chat/common/widgets/my_message_list.dart';
-import 'package:my_chat/common/widgets/sender_message_list.dart';
+import 'package:my_chat/features/chats/widgets/my_message_list.dart';
+import 'package:my_chat/features/chats/widgets/sender_message_list.dart';
 
 
 class ChatList extends StatelessWidget {

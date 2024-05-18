@@ -11,7 +11,6 @@ import 'package:my_chat/firebase_options.dart';
 import 'package:my_chat/router.dart';
 import 'package:my_chat/screens/mobile_screen.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -30,13 +29,13 @@ class MyApp extends ConsumerWidget {
       statusBarColor: Colors.transparent,
     ));
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'My Chat',
-        theme: ThemeData.dark().copyWith(
-            scaffoldBackgroundColor: backgroundColor,
-            appBarTheme: const AppBarTheme(backgroundColor: appBarColor)),
-        onGenerateRoute: (settings) => generateRoute(settings),
-        home: ref.watch(userAuthProvider).when(
+      debugShowCheckedModeBanner: false,
+      title: 'My Chat',
+      theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: backgroundColor,
+          appBarTheme: const AppBarTheme(backgroundColor: appBarColor)),
+      onGenerateRoute: (settings) => generateRoute(settings),
+      home: ref.watch(userAuthProvider).when(
             data: (user) {
               if (user == null) {
                 return const LandingScreen();
@@ -50,7 +49,6 @@ class MyApp extends ConsumerWidget {
             },
             loading: () => const Loader(),
           ),
-        
-        );
+    );
   }
 }

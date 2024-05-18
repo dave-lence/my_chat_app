@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_chat/colors.dart';
-import 'package:my_chat/screens/mobile_chat_screen.dart';
+import 'package:my_chat/features/chats/screens/mobile_chat_screen.dart';
 
 import '../../info.dart';
 
@@ -22,7 +22,10 @@ class ContactsList extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => MobileChatScreen(name:info[index]['name'].toString() ,),
+                        builder: (context) =>  MobileChatScreen(
+                          name: 'kk',
+                          uid: 'u',
+                        ),
                       ),
                     );
                   },
