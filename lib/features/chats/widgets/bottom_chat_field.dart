@@ -1,30 +1,44 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_chat/colors.dart';
+import 'package:my_chat/features/chats/controller/chat_controller.dart';
 
-class BottomChaTextField extends StatefulWidget {
+class BottomChaTextField extends ConsumerStatefulWidget {
   const BottomChaTextField({
     super.key,
+    required this.recieverId,
     required this.messageComroller,
   });
-
+  final String recieverId;
   final TextEditingController messageComroller;
 
   @override
-  State<BottomChaTextField> createState() => _BottomChaTextFieldState();
+  ConsumerState<BottomChaTextField> createState() => _BottomChaTextFieldState();
 }
 
-class _BottomChaTextFieldState extends State<BottomChaTextField>
+class _BottomChaTextFieldState extends ConsumerState<BottomChaTextField>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
   }
 
+  void sendTextMessage() {
+    if (widget.messageComroller.text.isNotEmpty) {
+      ref.read(chatControllerProvider).sendTextMessage(
+          context, widget.messageComroller.text.trim(), widget.recieverId);
+    }
+    setState(() {
+      widget.messageComroller.clear();
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
+    widget.messageComroller.dispose();
   }
 
   @override
@@ -91,7 +105,7 @@ class _BottomChaTextFieldState extends State<BottomChaTextField>
                   margin: const EdgeInsets.only(right: 10),
                   child: Center(
                       child: IconButton(
-                          onPressed: () {},
+                          onPressed: sendTextMessage,
                           icon: const Icon(
                             Icons.send,
                             color: Colors.black,

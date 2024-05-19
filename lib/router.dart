@@ -5,6 +5,7 @@ import 'package:my_chat/features/auth/screens/user_info_screen.dart';
 import 'package:my_chat/common/widgets/error_screen.dart';
 import 'package:my_chat/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:my_chat/features/chats/screens/mobile_chat_screen.dart';
+import 'package:my_chat/screens/mobile_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -13,7 +14,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => const LoginScreen(),
       );
     case OTPScreen.routeName:
-    final verificationId = settings.arguments as String;
+      final verificationId = settings.arguments as String;
       return MaterialPageRoute(
         builder: (context) => OTPScreen(
           verificationId: verificationId,
@@ -21,20 +22,21 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case UserInformationScreen.routeName:
       return MaterialPageRoute(
-        builder: (context) => const UserInformationScreen()
-      );
+          builder: (context) => const UserInformationScreen());
     case SelectContactScreen.routeName:
       return MaterialPageRoute(
-        builder: (context) => const SelectContactScreen()
-      );
+          builder: (context) => const SelectContactScreen());
     case MobileChatScreen.routeName:
-    final arguements = settings.arguments as Map<String, dynamic>;
-    final name = arguements['name'];
-    final uid = arguements['uid'];
+      final arguements = settings.arguments as Map<String, dynamic>;
+      final name = arguements['name'];
+      final uid = arguements['uid'];
       return MaterialPageRoute(
-        builder: (context) => MobileChatScreen(name: name, uid: uid,)
-      );
-
+          builder: (context) => MobileChatScreen(
+                name: name,
+                uid: uid,
+              ));
+    case MobileScreen.routeName:
+      return MaterialPageRoute(builder: (context) => const MobileScreen());
     default:
       return MaterialPageRoute(
         builder: (context) => const Scaffold(

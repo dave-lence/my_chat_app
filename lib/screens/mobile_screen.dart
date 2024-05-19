@@ -4,6 +4,7 @@ import 'package:my_chat/common/widgets/contact_list.dart';
 import 'package:my_chat/features/select_contacts/screens/select_contact_screen.dart';
 
 class MobileScreen extends StatelessWidget {
+  static const routeName = '/mobile-screen';
   const MobileScreen({super.key});
 
   @override
@@ -12,6 +13,7 @@ class MobileScreen extends StatelessWidget {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             elevation: 0,
             centerTitle: false,
             backgroundColor: appBarColor,

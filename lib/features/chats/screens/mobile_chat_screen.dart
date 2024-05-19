@@ -6,7 +6,9 @@ import 'package:my_chat/colors.dart';
 import 'package:my_chat/features/chats/widgets/bottom_chat_field.dart';
 import 'package:my_chat/features/chats/widgets/chat_list.dart';
 import 'package:my_chat/features/auth/controllers/auth_conroller.dart';
+import 'package:my_chat/screens/mobile_screen.dart';
 
+// ignore: must_be_immutable
 class MobileChatScreen extends ConsumerWidget {
   static const routeName = '/mobile-chat-screen';
   final String name;
@@ -20,6 +22,14 @@ class MobileChatScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, MobileScreen.routeName);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.white,
+            )),
         backgroundColor: appBarColor,
         title: StreamBuilder(
           stream: ref.read(authControllerProvider).userDataById(uid),
@@ -74,8 +84,10 @@ class MobileChatScreen extends ConsumerWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child:
-                        BottomChaTextField(messageComroller: messageComroller),
+                    child: BottomChaTextField(
+                      messageComroller: messageComroller,
+                      recieverId: uid,
+                    ),
                   ),
                 ),
               ],
