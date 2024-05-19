@@ -76,8 +76,8 @@ class MobileChatScreen extends ConsumerWidget {
             )),
         child: Column(
           children: [
-            const Expanded(
-              child: ChatList(),
+             Expanded(
+              child: ChatList(receiverId: uid,),
             ),
             Row(
               children: [

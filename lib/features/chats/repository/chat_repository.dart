@@ -20,24 +20,50 @@ class ChatRepository {
 
   ChatRepository({required this.auth, required this.firestore});
 
-
   Stream<List<ChatContact>> getContacts() {
-      return  firestore.collection('users')
+    return firestore
+        .collection('users')
         .doc(auth.currentUser!.uid)
         .collection('chats')
         .snapshots()
         .asyncMap((event) async {
-          List<ChatContact> contacts = [];
-          for(var document in event.docs){
-           var chatContact = ChatContact.fromMap(document.data());
-           var userData = await firestore.collection('users').doc(chatContact.contactId).get();
-           var user = UserModel.fromMap(userData.data()!);
+      List<ChatContact> contacts = [];
+      for (var document in event.docs) {
+        var chatContact = ChatContact.fromMap(document.data());
+        var userData = await firestore
+            .collection('users')
+            .doc(chatContact.contactId)
+            .get();
+        var user = UserModel.fromMap(userData.data()!);
 
-           contacts.add(ChatContact(name: user.name, profilePic: user.profilePic, contactId: chatContact.contactId, timeSent: chatContact.timeSent, lastMessage:chatContact.lastMessage));
-          }
-          return contacts;
-        });
-        
+        contacts.add(ChatContact(
+            name: user.name,
+            profilePic: user.profilePic,
+            contactId: chatContact.contactId,
+            timeSent: chatContact.timeSent,
+            lastMessage: chatContact.lastMessage));
+      }
+      return contacts;
+    });
+  }
+
+  Stream<List<MessageModel>> getMessages(String receiverId) {
+    return firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('message').orderBy('timeSent')
+        .snapshots()
+        .map((event) {
+      List<MessageModel> messagesList = [];
+      for (var document in event.docs) {
+       messagesList.add(MessageModel.fromMap(document.data()));
+       
+      }
+
+      return messagesList;
+    });
   }
 
   void _saveDataToContactSubCollection(
