@@ -48,7 +48,7 @@ class _WebScreenState extends State<WebScreen> {
                 const WebChatAppBar(),
                 const SizedBox(height: 20),
                 const Expanded(
-                  child: ChatList(),
+                  child: ChatList(receiverId: 'ty'),
                 ),
 
              fileOptions == true ?  

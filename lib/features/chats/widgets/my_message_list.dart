@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:my_chat/colors.dart';
+import 'package:my_chat/common/enum/message_enum.dart';
+import 'package:my_chat/features/chats/widgets/text_or_file.dart';
 
 class MyMessageCard extends StatelessWidget {
   final String message;
   final String date;
+  final MessageEnum type;
 
-  const MyMessageCard({Key? key, required this.message, required this.date})
+  const MyMessageCard({Key? key, required this.message, required this.date, required this.type})
       : super(key: key);
 
   @override
@@ -24,18 +27,20 @@ class MyMessageCard extends StatelessWidget {
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  right: 30,
-                  top: 5,
-                  bottom: 20,
-                ),
-                child: Text(
-                  message,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
+                padding:type == MessageEnum.text
+                      ? const EdgeInsets.only(
+                          left: 10,
+                          right: 30,
+                          top: 5,
+                          bottom: 20,
+                        )
+                      : const EdgeInsets.only(
+                          left: 5,
+                          top: 5,
+                          right: 5,
+                          bottom: 25,
+                        ),
+                child: TextFileWidget(message: message, type: type)
               ),
               Positioned(
                 bottom: 4,

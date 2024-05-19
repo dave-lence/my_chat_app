@@ -1,8 +1,12 @@
 // ignore_for_file: sized_box_for_whitespace
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_chat/colors.dart';
+import 'package:my_chat/common/enum/message_enum.dart';
+import 'package:my_chat/common/utils/utils.dart';
 import 'package:my_chat/features/chats/controller/chat_controller.dart';
 
 class BottomChaTextField extends ConsumerStatefulWidget {
@@ -33,6 +37,25 @@ class _BottomChaTextFieldState extends ConsumerState<BottomChaTextField>
     setState(() {
       widget.messageComroller.clear();
     });
+  }
+
+  void sendFileMessage(File file, MessageEnum messageEnum) {
+    ref
+        .read(chatControllerProvider)
+        .sendFileMessage(context, file, widget.recieverId, messageEnum);
+  }
+
+  void sendImageFile() async {
+    File? image = await pickImageFromGallery(context);
+    if (image != null) {
+      sendFileMessage(image, MessageEnum.image);
+    }
+  }
+  void sendVideoMessage() async {
+    File? video = await pickVideoFromGallery(context);
+    if (video != null) {
+      sendFileMessage(video, MessageEnum.video);
+    }
   }
 
   @override
@@ -78,14 +101,14 @@ class _BottomChaTextFieldState extends ConsumerState<BottomChaTextField>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: sendVideoMessage,
               icon: const Icon(
                 Icons.attach_file,
                 color: Colors.grey,
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: sendImageFile,
               icon: const Icon(
                 Icons.camera_alt,
                 color: Colors.grey,
