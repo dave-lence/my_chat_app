@@ -17,8 +17,13 @@ class TextFileWidget extends StatelessWidget {
               fontSize: 16,
             ),
           )
-        : type == MessageEnum.video
-            ? VideoPlayerItem(videoUrl: message)
-            : CachedNetworkImage(fit: BoxFit.contain, height: 300, imageUrl: message);
+        :  type == MessageEnum.video
+                ? VideoPlayerItem(videoUrl: message)
+                : type == MessageEnum.gif
+            ? CachedNetworkImage(
+                imageUrl: message,
+              )
+            : CachedNetworkImage(
+                    fit: BoxFit.contain, height: 300, imageUrl: message);
   }
 }

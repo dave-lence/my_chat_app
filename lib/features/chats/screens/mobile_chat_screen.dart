@@ -82,12 +82,9 @@ class MobileChatScreen extends ConsumerWidget {
             Row(
               children: [
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: BottomChaTextField(
-                      messageComroller: messageComroller,
-                      recieverId: uid,
-                    ),
+                  child: BottomChaTextField(
+                    messageComroller: messageComroller,
+                    recieverId: uid,
                   ),
                 ),
               ],
