@@ -27,6 +27,7 @@ class _BottomChaTextFieldState extends ConsumerState<BottomChaTextField>
     with SingleTickerProviderStateMixin {
   bool isShowEmojiContainer = false;
   FocusNode focusNode = FocusNode();
+  bool showVideoAndGifButtom = true;
 
   @override
   void initState() {
@@ -55,10 +56,13 @@ class _BottomChaTextFieldState extends ConsumerState<BottomChaTextField>
       sendFileMessage(image, MessageEnum.image);
     }
   }
+
   void selectGifFile() async {
     final gif = await pickGIF(context);
     if (gif != null) {
-      ref.read(chatControllerProvider).sendGifMessage(context, gif.url, widget.recieverId);
+      ref
+          .read(chatControllerProvider)
+          .sendGifMessage(context, gif.url, widget.recieverId);
     }
   }
 
@@ -119,6 +123,16 @@ class _BottomChaTextFieldState extends ConsumerState<BottomChaTextField>
                       widget.messageComroller.text = value;
                     });
                   },
+                  onTapOutside: (event) {
+                    setState(() {
+                      showVideoAndGifButtom = true;
+                    });
+                  },
+                  onTap: () {
+                    setState(() {
+                      showVideoAndGifButtom = false;
+                    });
+                  },
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: senderMessageColor,
@@ -142,17 +156,31 @@ class _BottomChaTextFieldState extends ConsumerState<BottomChaTextField>
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  showVideoAndGifButtom == true
+                      ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: sendVideoMessage,
+                            icon: const Icon(
+                              Icons.video_library_outlined,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: selectGifFile,
+                            icon: const Icon(
+                              Icons.gif,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      )
+                      : const SizedBox(),
                   IconButton(
-                    onPressed: sendVideoMessage,
+                    onPressed: sendImageFile,
                     icon: const Icon(
-                      Icons.attach_file,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: selectGifFile,
-                    icon: const Icon(
-                      Icons.gif,
+                      Icons.camera_alt,
                       color: Colors.grey,
                     ),
                   ),
@@ -205,10 +233,11 @@ class _BottomChaTextFieldState extends ConsumerState<BottomChaTextField>
                 width: MediaQuery.of(context).size.width,
                 child: EmojiPicker(
                   
-                  onBackspacePressed: () {},
+                  onBackspacePressed: () {
+                  },
                   config: const Config(
+                    backspaceColor: tabColor,
                     enableSkinTones: true,
-                     
                     checkPlatformCompatibility: true,
                     bgColor: Colors.black,
                     iconColorSelected: tabColor,

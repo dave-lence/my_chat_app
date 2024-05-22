@@ -69,12 +69,12 @@ class ChatRepository {
     });
   }
 
-  void _saveDataToContactSubCollection(
-      UserModel senderData,
-      UserModel receiverData,
-      DateTime timeSent,
-      String text,
-      String receiverId) async {
+  void _saveDataToContactSubCollection({
+      required UserModel senderData,
+      required UserModel receiverData,
+      required DateTime timeSent,
+      required String text,
+      required String receiverId}) async {
     //users -> reciever id -> chats -> current user id -> set data
     var receiverChatContact = ChatContact(
         name: senderData.name,
@@ -92,7 +92,7 @@ class ChatRepository {
 
     //users -> current user id -> chats -> receiver id -> set data
     var senderChatContact = ChatContact(
-        name: receiverData.name,
+      name: receiverData.name,
         profilePic: receiverData.profilePic,
         contactId: receiverData.uid,
         timeSent: timeSent,
@@ -160,9 +160,11 @@ class ChatRepository {
 
       recieverData = UserModel.fromMap(userDataMap.data()!);
 
-      _saveDataToContactSubCollection(
-          recieverData, senderData, timeSent, text, recieverId);
 
+
+      _saveDataToContactSubCollection(
+        receiverData: 
+          recieverData,senderData:  senderData, timeSent: timeSent,text:  text,receiverId:  recieverId);
       _saveMessageToMessageSubCollection(
           receiverId: recieverId,
           text: text,
@@ -220,8 +222,10 @@ class ChatRepository {
           fileMessage = 'Gif';
       }
 
+
       _saveDataToContactSubCollection(
-          senderUserData, recieverUserData, timeSent, fileMessage, receiverId);
+
+         senderData:  senderUserData,receiverData:  recieverUserData,timeSent:  timeSent,text:  fileMessage, receiverId:  receiverId);
 
       _saveMessageToMessageSubCollection(
           receiverId: receiverId,
@@ -253,7 +257,7 @@ class ChatRepository {
       var messageId = const Uuid().v1();
 
       _saveDataToContactSubCollection(
-          senderUserData, recieverUserData, timeSent, 'GIF', receiverId);
+         senderData:  senderUserData, receiverData: recieverUserData,timeSent:  timeSent,text:  'GIF',receiverId:  receiverId);
 
       _saveMessageToMessageSubCollection(
           receiverId: receiverId,

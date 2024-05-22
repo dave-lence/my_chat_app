@@ -1,17 +1,28 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:my_chat/colors.dart';
 import 'package:my_chat/common/widgets/loader.dart';
 import 'package:my_chat/features/chats/controller/chat_controller.dart';
-import 'package:my_chat/features/chats/screens/mobile_chat_screen.dart';
+import 'package:my_chat/features/chats/repository/mobile_chat_screen.dart';
 import 'package:my_chat/models/chat_contact.dart';
 
-class ContactsList extends ConsumerWidget {
-  const ContactsList({Key? key}) : super(key: key);
+class ContatctsList extends ConsumerStatefulWidget {
+  const ContatctsList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ContatctListState();
+}
+
+class _ContatctListState extends ConsumerState<ContatctsList> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: StreamBuilder<List<ChatContact>>(

@@ -26,7 +26,7 @@ class _WebScreenState extends State<WebScreen> {
                 children: [
                   WebAppBar(), WebSearchBar(),
                   SingleChildScrollView(
-                    child: Column(children: [ContactsList()]),
+                    child: Column(children: [ContatctsList()]),
                   ),
                 ],
               ),

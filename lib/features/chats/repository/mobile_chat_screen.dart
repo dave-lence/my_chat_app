@@ -41,10 +41,16 @@ class MobileChatScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(name),
-                Text(
-                  snapshot.data!.isOnline ? "Online" : 'Offline',
-                  style: const TextStyle(fontSize: 13),
-                )
+                snapshot.data!.isOnline
+                    ? const Text(
+                        "Online...",
+                        style: TextStyle(fontSize: 13, color:tabColor),
+
+                      )
+                    : const Text(
+                        "Offline...",
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      )
               ],
             );
           },
@@ -67,17 +73,18 @@ class MobileChatScreen extends ConsumerWidget {
       ),
       body: Container(
         decoration: const BoxDecoration(
-            border: Border(left: BorderSide(color: dividerColor)),
             image: DecorationImage(
-              image: AssetImage(
-                'assets/chat-background.jpg',
-              ),
-              fit: BoxFit.cover,
-            )),
+          image: AssetImage(
+            'assets/chat-background.jpg',
+          ),
+          fit: BoxFit.cover,
+        )),
         child: Column(
           children: [
-             Expanded(
-              child: ChatList(receiverId: uid,),
+            Expanded(
+              child: ChatList(
+                receiverId: uid,
+              ),
             ),
             Row(
               children: [
