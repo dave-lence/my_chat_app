@@ -3,7 +3,7 @@ import 'package:my_chat/features/auth/screens/login_screen.dart';
 import 'package:my_chat/features/auth/screens/otp_screen.dart';
 import 'package:my_chat/features/auth/screens/user_info_screen.dart';
 import 'package:my_chat/common/widgets/error_screen.dart';
-import 'package:my_chat/features/chats/repository/mobile_chat_screen.dart';
+import 'package:my_chat/features/chats/screens/mobile_chat_screen.dart';
 import 'package:my_chat/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:my_chat/screens/mobile_screen.dart';
 

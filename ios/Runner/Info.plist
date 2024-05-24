@@ -36,6 +36,8 @@
 		<string>Mic Use</string>
 		<key>NSContactsUsageDescription</key>
 		<string>We need access to the contact list</string>
+		<key>NSAppleMusicUsageDescription</key>
+		<string>MyApp need this permission</string>
 
 		<key>UISupportedInterfaceOrientations</key>
 		<array>

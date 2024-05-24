@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_chat/common/utils/utils.dart';
-import 'package:my_chat/features/chats/repository/mobile_chat_screen.dart';
+import 'package:my_chat/features/chats/screens/mobile_chat_screen.dart';
 import 'package:my_chat/models/user_model.dart';
 
 final selectContactRepoProvider = Provider(

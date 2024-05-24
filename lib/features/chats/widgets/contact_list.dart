@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:my_chat/colors.dart';
 import 'package:my_chat/common/widgets/loader.dart';
 import 'package:my_chat/features/chats/controller/chat_controller.dart';
-import 'package:my_chat/features/chats/repository/mobile_chat_screen.dart';
+import 'package:my_chat/features/chats/screens/mobile_chat_screen.dart';
 import 'package:my_chat/models/chat_contact.dart';
 
 class ContatctsList extends ConsumerStatefulWidget {

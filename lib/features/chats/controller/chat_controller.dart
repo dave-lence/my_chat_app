@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_chat/common/enum/message_enum.dart';
+import 'package:my_chat/common/provider/message_reply_provider.dart';
 import 'package:my_chat/features/auth/controllers/auth_conroller.dart';
 import 'package:my_chat/features/chats/repository/chat_repository.dart';
 import 'package:my_chat/models/chat_contact.dart';
@@ -32,16 +33,21 @@ class ChatController {
     String text,
     String recieverId,
   ) {
+    final messageReply = ref.read(messageReplyProvider);
+
     ref.read(userAuthProvider).whenData((value) =>
         chatRepository.sendTextMessage(
             context: context,
             text: text,
             recieverId: recieverId,
-            senderData: value!));
+            senderData: value!,
+            messageReply: messageReply));
   }
 
   void sendFileMessage(BuildContext context, File file, String receiverId,
       MessageEnum messageEnum) {
+    final messageReply = ref.read(messageReplyProvider);
+
     ref.read(userAuthProvider).whenData((value) {
       chatRepository.sendFile(
           context: context,
@@ -49,7 +55,8 @@ class ChatController {
           receiverId: receiverId,
           senderUserData: value!,
           messageEnum: messageEnum,
-          ref: ref);
+          ref: ref,
+          messageReply: messageReply);
     });
   }
 
@@ -58,6 +65,8 @@ class ChatController {
     String gifUrl,
     String receiverId,
   ) {
+    final messageReply = ref.read(messageReplyProvider);
+
     ref.read(userAuthProvider).whenData((value) {
       int gifUrlPartIndex = gifUrl.lastIndexOf('-') + 1;
       String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
@@ -66,7 +75,8 @@ class ChatController {
           context: context,
           gifUrl: newgifUrl,
           receiverId: receiverId,
-          senderUserData: value!);
+          senderUserData: value!,
+          messageReply: messageReply);
     });
   }
 }
