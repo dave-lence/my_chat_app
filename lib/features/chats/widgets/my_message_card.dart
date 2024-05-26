@@ -13,21 +13,22 @@ class MyMessageCard extends ConsumerWidget {
   final String repliedText;
   final String username;
   final MessageEnum repliedMessageType;
+  final bool isSeen;
 
-  const MyMessageCard({
-    Key? key,
-    required this.message,
-    required this.date,
-    required this.type,
-    required this.onLeftSwipe,
-    required this.repliedText,
-    required this.username,
-    required this.repliedMessageType,
-  }) : super(key: key);
+  const MyMessageCard(
+      {Key? key,
+      required this.message,
+      required this.date,
+      required this.type,
+      required this.onLeftSwipe,
+      required this.repliedText,
+      required this.username,
+      required this.repliedMessageType,
+      required this.isSeen})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     bool isReplying = repliedText.isNotEmpty;
 
     return SwipeTo(
@@ -72,7 +73,7 @@ class MyMessageCard extends ConsumerWidget {
                         ),
                         child: TextFileWidget(
                           message: repliedText,
-                          type: type,
+                          type: repliedMessageType,
                         ),
                       ),
                     ),
@@ -94,8 +95,7 @@ class MyMessageCard extends ConsumerWidget {
                           ),
                     child: TextFileWidget(message: message, type: type),
                   ),
-                ]
-                ),
+                ]),
                 Positioned(
                   bottom: 4,
                   right: 5,
@@ -108,10 +108,10 @@ class MyMessageCard extends ConsumerWidget {
                           color: Colors.white60,
                         ),
                       ),
-                      const Icon(
-                        Icons.done_all,
+                      Icon(
+                       isSeen ? Icons.done_all : Icons.done,
                         size: 15,
-                        color: Colors.blue,
+                        color: isSeen ? Colors.blue : greyColor,
                       ),
                     ],
                   ),

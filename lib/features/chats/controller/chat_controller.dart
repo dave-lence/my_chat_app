@@ -79,4 +79,12 @@ class ChatController {
           messageReply: messageReply);
     });
   }
+
+  void setChatMessageSeen(
+      {required BuildContext context,
+      required String receiverId,
+      required String messageId}) {
+    chatRepository.setChatMessageSeen(
+        context: context, receiverId: receiverId, messageId: messageId);
+  }
 }

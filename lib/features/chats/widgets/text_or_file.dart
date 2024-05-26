@@ -61,7 +61,7 @@ class TextFileWidget extends ConsumerWidget {
                         height: 300,
                         fit: BoxFit.contain,
                       )
-                    : CachedNetworkImage(
-                        fit: BoxFit.contain, height: 300, imageUrl: message);
+                    : type == MessageEnum.image ? CachedNetworkImage(
+                        fit: BoxFit.contain, height: 300, imageUrl: message) : const SizedBox();
   }
 }

@@ -20,27 +20,29 @@ class ChatList extends ConsumerStatefulWidget {
 
 class _ChatListState extends ConsumerState<ChatList> {
   final messageScrollController = ScrollController();
-  
+
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     messageScrollController.dispose();
   }
 
-
-  void onSwipeReplyMessage({
-    required String message,
-    required bool isMe,
-    required MessageEnum messageEnum
-  }){
-    ref.watch(messageReplyProvider.notifier).update((state) => MessageReply(message, isMe, messageEnum));
+  void onSwipeReplyMessage(
+      {required String message,
+      required bool isMe,
+      required MessageEnum messageEnum}) {
+    ref
+        .watch(messageReplyProvider.notifier)
+        .update((state) => MessageReply(message, isMe, messageEnum));
   }
-  void onSwipeRightReplyMessage({
-    required String message,
-    required bool isMe,
-    required MessageEnum messageEnum
-  }){
-    ref.watch(messageReplyProvider.notifier).update((state) => MessageReply(message, isMe, messageEnum));
+
+  void onSwipeRightReplyMessage(
+      {required String message,
+      required bool isMe,
+      required MessageEnum messageEnum}) {
+    ref
+        .watch(messageReplyProvider.notifier)
+        .update((state) => MessageReply(message, isMe, messageEnum));
   }
 
   @override
@@ -58,31 +60,49 @@ class _ChatListState extends ConsumerState<ChatList> {
               style: const TextStyle(color: Colors.white),
             );
           } else {
-            SchedulerBinding.instance.addPostFrameCallback((_) { 
-              messageScrollController.jumpTo(messageScrollController.position.maxScrollExtent);
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              messageScrollController
+                  .jumpTo(messageScrollController.position.maxScrollExtent);
             });
             return ListView.builder(
               controller: messageScrollController,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 var message = snapshot.data![index];
+
+                if (!message.isSeen &&
+                    message.recieverid ==
+                        FirebaseAuth.instance.currentUser!.uid) {
+                  ref.read(chatControllerProvider).setChatMessageSeen(
+                      context: context,
+                      receiverId: widget.receiverId,
+                      messageId: message.messageId);
+                }
+
                 if (message.senderId ==
                     FirebaseAuth.instance.currentUser!.uid) {
                   return MyMessageCard(
                     message: message.text,
                     date: DateFormat.Hm().format(message.timeSent),
                     type: message.type,
-                    repliedMessageType: message.type,
+                    repliedMessageType: message.repliedMessageType,
                     repliedText: message.repliedMessage,
                     username: message.repliedTo,
-                    onLeftSwipe: (_)=> onSwipeReplyMessage(message: message.text, isMe: true, messageEnum: message.type),
+                    onLeftSwipe: (_) => onSwipeReplyMessage(
+                        message: message.text,
+                        isMe: true,
+                        messageEnum: message.type),
+                        isSeen: message.isSeen
                   );
                 }
                 return SenderMessageCard(
                   message: message.text,
                   date: DateFormat.Hm().format(message.timeSent),
                   type: message.type,
-                  onRightSwipe: (_) => onSwipeRightReplyMessage(message: message.text, isMe: false, messageEnum: message.type),
+                  onRightSwipe: (_) => onSwipeRightReplyMessage(
+                      message: message.text,
+                      isMe: false,
+                      messageEnum: message.type),
                   repliedMessageType: message.repliedMessageType,
                   repliedText: message.repliedMessage,
                   username: message.repliedTo,
