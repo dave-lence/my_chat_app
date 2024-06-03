@@ -1,9 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_chat/colors.dart';
+import 'package:my_chat/common/utils/utils.dart';
 import 'package:my_chat/features/auth/controllers/auth_conroller.dart';
 import 'package:my_chat/features/chats/widgets/contact_list.dart';
 import 'package:my_chat/features/select_contacts/screens/select_contact_screen.dart';
+import 'package:my_chat/features/status/screens/confirm_status_screen.dart';
 import 'package:my_chat/features/status/screens/status_contact_screen.dart';
 
 class MobileScreen extends ConsumerStatefulWidget {
@@ -83,6 +89,10 @@ class _MobileScreenState extends ConsumerState<MobileScreen>
                 indicatorWeight: 4,
                 labelColor: tabColor,
                 onTap: (value) {
+                  debugPrint(value.toString());
+                  setState(() {
+                    tabBarController.index = value;
+                  });
                   tabBarController.index = value;
                 },
                 unselectedLabelColor: Colors.grey,
@@ -102,12 +112,22 @@ class _MobileScreenState extends ConsumerState<MobileScreen>
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.pushNamed(context, SelectContactScreen.routeName);
+            onPressed: () async {
+              if (tabBarController.index == 0) {
+                Navigator.pushNamed(context, SelectContactScreen.routeName);
+              } else {
+                File? pickedImage = await pickVideoFromGallery(context);
+                if (pickedImage != null) {
+                  Navigator.pushNamed(context, ConfirmStatusScreen.routeName,
+                      arguments: pickedImage);
+                }
+              }
             },
             backgroundColor: tabColor,
             child: Icon(
-             tabBarController.index == 1 ? Icons.camera_roll_outlined : Icons.comment,
+              tabBarController.index == 1
+                  ? Icons.add_a_photo_sharp
+                  : tabBarController.index == 2 ? Icons.phone : Icons.comment,
               color: Colors.white,
             ),
           ),
