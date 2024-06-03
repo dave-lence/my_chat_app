@@ -55,6 +55,7 @@ dependencies:
   flutter_sound: ^9.2.13
   audioplayers: ^5.2.1
   swipe_to: ^1.0.6
+  firebase_app_check: ^0.2.2+7
 
 dev_dependencies:
   flutter_test:
