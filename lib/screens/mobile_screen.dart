@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_chat/colors.dart';
@@ -9,7 +10,7 @@ import 'package:my_chat/common/utils/utils.dart';
 import 'package:my_chat/features/auth/controllers/auth_conroller.dart';
 import 'package:my_chat/features/chats/widgets/contact_list.dart';
 import 'package:my_chat/features/select_contacts/screens/select_contact_screen.dart';
-import 'package:my_chat/features/status/screens/confirm_status_screen.dart';
+import 'package:my_chat/features/status/screens/confrim_status_screen.dart';
 import 'package:my_chat/features/status/screens/status_contact_screen.dart';
 
 class MobileScreen extends ConsumerStatefulWidget {
@@ -23,17 +24,24 @@ class MobileScreen extends ConsumerStatefulWidget {
 class _MobileScreenState extends ConsumerState<MobileScreen>
     with WidgetsBindingObserver, TickerProviderStateMixin {
   late TabController tabBarController;
+  int currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     tabBarController = TabController(length: 3, vsync: this);
+    tabBarController.addListener(() {
+      setState(() {
+        currentIndex = tabBarController.index;
+      });
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    tabBarController.dispose();
     WidgetsBinding.instance.removeObserver(this);
   }
 
@@ -88,10 +96,11 @@ class _MobileScreenState extends ConsumerState<MobileScreen>
                 indicatorColor: tabColor,
                 indicatorWeight: 4,
                 labelColor: tabColor,
+                enableFeedback: true,
                 onTap: (value) {
                   debugPrint(value.toString());
                   setState(() {
-                    tabBarController.index = value;
+                    currentIndex = value;
                   });
                   tabBarController.index = value;
                 },
@@ -125,9 +134,11 @@ class _MobileScreenState extends ConsumerState<MobileScreen>
             },
             backgroundColor: tabColor,
             child: Icon(
-              tabBarController.index == 1
+              currentIndex == 1
                   ? Icons.add_a_photo_sharp
-                  : tabBarController.index == 2 ? Icons.phone : Icons.comment,
+                  : currentIndex == 2
+                      ? Icons.phone
+                      : Icons.comment,
               color: Colors.white,
             ),
           ),

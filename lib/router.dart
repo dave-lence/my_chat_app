@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:my_chat/features/auth/screens/login_screen.dart';
 import 'package:my_chat/features/auth/screens/otp_screen.dart';
@@ -5,6 +7,7 @@ import 'package:my_chat/features/auth/screens/user_info_screen.dart';
 import 'package:my_chat/common/widgets/error_screen.dart';
 import 'package:my_chat/features/chats/screens/mobile_chat_screen.dart';
 import 'package:my_chat/features/select_contacts/screens/select_contact_screen.dart';
+import 'package:my_chat/features/status/screens/confrim_status_screen.dart';
 import 'package:my_chat/screens/mobile_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -35,6 +38,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
                 name: name,
                 uid: uid,
               ));
+    case ConfirmStatusScreen.routeName:
+      final File file = settings.arguments as File;
+      return MaterialPageRoute(
+        builder: (context) => ConfirmStatusScreen(file: file),
+      );
     case MobileScreen.routeName:
       return MaterialPageRoute(builder: (context) => const MobileScreen());
     default:
