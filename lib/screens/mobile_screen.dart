@@ -4,6 +4,7 @@ import 'package:my_chat/colors.dart';
 import 'package:my_chat/features/auth/controllers/auth_conroller.dart';
 import 'package:my_chat/features/chats/widgets/contact_list.dart';
 import 'package:my_chat/features/select_contacts/screens/select_contact_screen.dart';
+import 'package:my_chat/features/status/screens/status_contact_screen.dart';
 
 class MobileScreen extends ConsumerStatefulWidget {
   static const routeName = '/mobile-screen';
@@ -14,11 +15,14 @@ class MobileScreen extends ConsumerStatefulWidget {
 }
 
 class _MobileScreenState extends ConsumerState<MobileScreen>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, TickerProviderStateMixin {
+  late TabController tabBarController;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    tabBarController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -73,26 +77,37 @@ class _MobileScreenState extends ConsumerState<MobileScreen>
                     color: Colors.grey,
                   )),
             ],
-            bottom: const TabBar(
+            bottom: TabBar(
+                controller: tabBarController,
                 indicatorColor: tabColor,
                 indicatorWeight: 4,
                 labelColor: tabColor,
+                onTap: (value) {
+                  tabBarController.index = value;
+                },
                 unselectedLabelColor: Colors.grey,
-                labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                tabs: [
+                labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+                tabs: const [
                   Tab(text: 'CHATS'),
                   Tab(text: 'STATUS'),
                   Tab(text: 'CALLS'),
                 ]),
           ),
-          body:  const ContatctsList(),
+          body: TabBarView(
+            controller: tabBarController,
+            children: const [
+              ContatctsList(),
+              StatusContactScreen(),
+              Text('Calls')
+            ],
+          ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               Navigator.pushNamed(context, SelectContactScreen.routeName);
             },
             backgroundColor: tabColor,
-            child: const Icon(
-              Icons.comment,
+            child: Icon(
+             tabBarController.index == 1 ? Icons.camera_roll_outlined : Icons.comment,
               color: Colors.white,
             ),
           ),
